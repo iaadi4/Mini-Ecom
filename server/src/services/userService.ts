@@ -1,4 +1,5 @@
-import { PrismaClient} from "../generated/prisma"
+import { PrismaClient} from "../generated/prisma";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
@@ -24,11 +25,12 @@ class UserService {
             if(checkExistingUser) {
                 throw new Error("User already exists with this email");
             }
+            const encryptedPassword = bcrypt.hashSync(password, 10);
             const user = await prisma.user.create({
                 data: {
                     name,
                     email,
-                    password
+                    password: encryptedPassword
                 }
             })
             return user;
@@ -51,7 +53,7 @@ class UserService {
             if(!user) {
                 throw new Error("User not found");
             }
-            if(user.password !== password) {
+            if(!bcrypt.compareSync(password, user.password)) {
                 throw new Error("Invalid password");
             }
             return user;

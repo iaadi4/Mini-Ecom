@@ -1,4 +1,4 @@
-import userService from "../services/user-service";
+import userService from "../services/userService";
 import { Request, Response } from "express";
 import StatusCode from "../utils/status-codes";
 import jwt from "jsonwebtoken";

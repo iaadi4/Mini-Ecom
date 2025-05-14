@@ -1,6 +1,6 @@
 import userService from "../services/userService";
 import { Request, Response } from "express";
-import StatusCode from "../utils/status-codes";
+import StatusCode from "../utils/statusCodes";
 import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET!

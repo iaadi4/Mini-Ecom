@@ -5,8 +5,9 @@ import { Request, Response } from "express";
 async function list(req: Request, res: Response): Promise<void> {
     const { name, description, price, imageUrl } = req.body;
     try {
-        const userId = req.user;
-        const data = await productSerice.list(userId, { name, description, price, imageUrl });
+        const userId = req.user.userId;
+        const numPrice = parseInt(price);
+        const data = await productSerice.list(userId, { name, description, price: numPrice, imageUrl });
         if(!data) {
             res.status(StatusCode.BAD_REQUEST).json({
                 success: false,
@@ -30,7 +31,7 @@ async function list(req: Request, res: Response): Promise<void> {
 
 async function userProducts(req: Request, res: Response): Promise<void> {
     try {
-        const userId = req.user;
+        const userId = req.user.userId;
         const data = await productSerice.userProducts(userId);
         if(!data) {
             res.status(StatusCode.BAD_REQUEST).json({
@@ -53,7 +54,7 @@ async function userProducts(req: Request, res: Response): Promise<void> {
     }
 } 
 
-async function allProducts(res: Response): Promise<void> {
+async function allProducts(rq: Request, res: Response): Promise<void> {
     try {
         const data = await productSerice.allProducts();
         if(!data) {

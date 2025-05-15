@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
+import productRoutes from "./routes/productRoutes";
 
 const app = express();
 dotenv.config();
@@ -17,6 +18,7 @@ app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/product', productRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

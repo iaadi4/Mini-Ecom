@@ -36,6 +36,9 @@ class ProductService {
             const userProducts = await prisma.product.findMany({
                 where: {
                     userId
+                }, 
+                orderBy: {
+                    'createdAt': 'desc'
                 }
             })
             return userProducts;
@@ -47,7 +50,38 @@ class ProductService {
 
     async allProducts() {
         try {
-            const products = await prisma.product.findMany({});
+            const products = await prisma.product.findMany({
+                orderBy: {
+                    'createdAt': 'desc'
+                }
+            });
+            return products;
+        } catch (error) {
+            console.error("Error in service layer", error);
+            throw new Error("Failed to fetch products");
+        }
+    }
+
+    async filterSearch(query: string) {
+        try {
+            const products = await prisma.product.findMany({
+                where: {
+                  OR: [
+                    {
+                      name: {
+                        contains: query,
+                        mode: 'insensitive',
+                      },
+                    },
+                    {
+                      description: {
+                        contains: query,
+                        mode: 'insensitive',
+                      },
+                    },
+                  ],
+                },
+            });
             return products;
         } catch (error) {
             console.error("Error in service layer", error);

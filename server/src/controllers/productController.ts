@@ -80,8 +80,8 @@ async function allProducts(rq: Request, res: Response): Promise<void> {
 
 async function filterSearch(req: Request, res: Response): Promise<void> {
     try {
-        const query = req.body;
-        const data = productSerice.filterSearch(query);
+        const query = req.params.query;
+        const data = await productSerice.filterSearch(query);
         if(!data) {
             res.status(StatusCode.BAD_REQUEST).json({
                 success: false,
